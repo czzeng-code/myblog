@@ -1,8 +1,10 @@
 package com.zeng.web.blog.controller;
 
+import cn.hutool.db.Entity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zeng.web.blog.domain.UserDto;
+import com.zeng.web.blog.factory.DaoFactory;
 import com.zeng.web.blog.factory.ServiceFactory;
 import com.zeng.web.blog.service.UserService;
 import com.zeng.web.blog.util.Message;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,7 +30,7 @@ import java.util.Map;
  * @Date 2019/11/9
  * @Version 1.0
  **/
-@WebServlet(urlPatterns = "/sign-in")
+@WebServlet(urlPatterns = "/api/sign-in")
 public class UserController extends HttpServlet {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
     private UserService userService = ServiceFactory.getUserServiceInstance();
@@ -54,6 +57,12 @@ public class UserController extends HttpServlet {
         PrintWriter out = resp.getWriter();
         out.print(gson.toJson(ro));
         out.close();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Entity> entityList = null;
+//        entityList = DaoFactory.getUserDaoInstance().
     }
 
     @Override

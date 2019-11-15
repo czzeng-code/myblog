@@ -8,11 +8,18 @@ import java.util.List;
 /**
  * @author Zeng
  * @ClassName UserDao
- * @Description TOOD
+ * @Description UserDao数据访问对象接口
  * @Date 2019/11/9
  * @Version 1.0
  **/
 public interface UserDao {
+    /**
+     * 新增用户
+     * @param user
+     * @return
+     * @throws SQLException
+     */
+    int insert(User user) throws SQLException;
     /**
      * 批量新增用户
      * @param userList

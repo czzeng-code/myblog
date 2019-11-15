@@ -24,6 +24,18 @@ public class UserDaoImpl implements UserDao {
     private static Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
     @Override
+    public int insert(User user) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "INSERT INTO t_user (mobile,password) VALUES (?,?) ";
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        pstmt.setString(1, user.getMobile());
+        pstmt.setString(2, user.getPassword());
+        int n = pstmt.executeUpdate();
+        DbUtil.close(null, pstmt, connection);
+        return n;
+    }
+
+    @Override
     public int[] batchInsert(List<User> userList) throws SQLException {
         Connection connection = DbUtil.getConnection();
         connection.setAutoCommit(false);

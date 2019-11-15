@@ -1,6 +1,8 @@
 package com.zeng.web.blog.factory;
 
+import com.zeng.web.blog.dao.ArticleDao;
 import com.zeng.web.blog.dao.UserDao;
+import com.zeng.web.blog.dao.impl.ArticleDaoImpl;
 import com.zeng.web.blog.dao.impl.UserDaoImpl;
 
 /**
@@ -15,5 +17,9 @@ public class DaoFactory {
 
     public static UserDao getUserDaoInstance(){
         return new UserDaoImpl();
+    }
+
+    public static ArticleDao getArticleDaoInstance() {
+        return new ArticleDaoImpl();
     }
 }

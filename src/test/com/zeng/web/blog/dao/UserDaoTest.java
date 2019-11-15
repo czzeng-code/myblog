@@ -3,6 +3,7 @@ package com.zeng.web.blog.dao;
 import com.zeng.web.blog.entity.User;
 import com.zeng.web.blog.factory.DaoFactory;
 import com.zeng.web.blog.util.JSoupSpider;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,5 +39,21 @@ public class UserDaoTest {
             logger.error("根据手机号查询用户出现异常");
         }
         System.out.println(user);
+    }
+
+    @Test
+    public void insertUser() {
+        UserDao userDao = DaoFactory.getUserDaoInstance();
+        int n = 0;
+        User user = new User();
+        user.setMobile("12022334455");
+        user.setPassword(DigestUtils.md5Hex("123456"));
+        try {
+            n = userDao.insert(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(1,n);
     }
 }

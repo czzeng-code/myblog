@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +17,7 @@ import java.io.IOException;
  * @Date 2019/11/9
  * @Version 1.0
  **/
-@WebServlet(urlPatterns = "/*")
+@WebFilter(urlPatterns = "/*")
 public class CharacterFilter implements Filter {
     private static Logger logger = LoggerFactory.getLogger(CharacterFilter.class);
 

@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * @author
  * @ClassName CORSFilter
- * @Description TODO
+ * @Description 字符集过滤器,过滤请求和响应字符集，统一响应类型
  * @Date 2019/10/3
  * @Version 1.0
  **/
