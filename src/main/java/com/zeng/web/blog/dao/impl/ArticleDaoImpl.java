@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,8 +46,35 @@ public class ArticleDaoImpl implements ArticleDao {
         });
         int[] result = pstmt.executeBatch();
         connection.commit();
-        DbUtil.close(null,pstmt,connection);
+        DbUtil.close(null, pstmt, connection);
         return result;
 
+    }
+
+    @Override
+    public List<Article> selectHotArticles() throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "SELECT id, title, content, cover, nickname, comments, likes, create_time FROM `t_article` ";
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        ResultSet rs = pstmt.executeQuery();
+        List<Article> articleList = new ArrayList<>(60);
+
+        try {
+            while (rs.next()) {
+                Article article = new Article();
+                article.setId(rs.getLong("id"));
+                article.setTitle(rs.getString("title"));
+                article.setCover(rs.getString("cover"));
+                article.setNickname(rs.getString("nickname"));
+                article.setComments(rs.getLong("comments"));
+                article.setLikes(rs.getLong("likes"));
+                article.setCreateTime(rs.getTimestamp("create_time").toLocalDateTime());
+                articleList.add(article);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.error("查询文章出现异常");
+        }
+        return articleList;
     }
 }

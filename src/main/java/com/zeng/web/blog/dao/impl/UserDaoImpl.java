@@ -1,16 +1,15 @@
 package com.zeng.web.blog.dao.impl;
 
 import com.zeng.web.blog.dao.UserDao;
+import com.zeng.web.blog.domain.UserDto;
 import com.zeng.web.blog.entity.User;
-import com.zeng.web.blog.util.DbUtil;
+import com.zeng.web.blog.util.DataUtil;
 import com.zeng.web.blog.util.DbUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,14 +23,16 @@ public class UserDaoImpl implements UserDao {
     private static Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
     @Override
-    public int insert(User user) throws SQLException {
+    public int insert(UserDto userDto) throws SQLException {
         Connection connection = DbUtil.getConnection();
-        String sql = "INSERT INTO t_user (mobile,password) VALUES (?,?) ";
+        String sql = "INSERT INTO t_user (mobile,password,create_time,birthday) VALUES (?,?,?,?) ";
         PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setString(1, user.getMobile());
-        pstmt.setString(2, user.getPassword());
+        pstmt.setString(1, userDto.getMobile());
+        pstmt.setString(2, userDto.getPassword());
+        pstmt.setObject(3, Timestamp.valueOf(LocalDateTime.now()));
+        pstmt.setObject(4, DataUtil.getBirthday());
         int n = pstmt.executeUpdate();
-        DbUtil.close(null, pstmt, connection);
+//        DbUtil.close(null, pstmt, connection);
         return n;
     }
 
@@ -59,7 +60,7 @@ public class UserDaoImpl implements UserDao {
         });
         int[] result = pstmt.executeBatch();
         connection.commit();
-        DbUtil.close(null,pstmt,connection);
+//        DbUtil.close(null,pstmt,connection);
         return result;
     }
 

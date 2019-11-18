@@ -11,4 +11,11 @@ public interface UserService {
      * @return
      */
     Map<String, Object> signIn(UserDto userDto);
+
+    /**
+     * 用户注册功能
+     * @param userDto
+     * @return
+     */
+    Map<String, Object> signUp(UserDto userDto);
 }

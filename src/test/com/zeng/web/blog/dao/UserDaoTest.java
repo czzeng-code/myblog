@@ -1,5 +1,6 @@
 package com.zeng.web.blog.dao;
 
+import com.zeng.web.blog.domain.UserDto;
 import com.zeng.web.blog.entity.User;
 import com.zeng.web.blog.factory.DaoFactory;
 import com.zeng.web.blog.util.JSoupSpider;
@@ -45,7 +46,7 @@ public class UserDaoTest {
     public void insertUser() {
         UserDao userDao = DaoFactory.getUserDaoInstance();
         int n = 0;
-        User user = new User();
+        UserDto user = new UserDto();
         user.setMobile("12022334455");
         user.setPassword(DigestUtils.md5Hex("123456"));
         try {

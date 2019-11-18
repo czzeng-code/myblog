@@ -46,4 +46,23 @@ public class UserServiceImpl implements UserService {
         }
         return map;
     }
+
+    @Override
+    public Map<String, Object> signUp(UserDto userDto) {
+        Map<String, Object> map = new HashMap<>();
+        int result = 0;
+        try {
+           result = userDao.insert(userDto);
+        } catch (SQLException e) {
+            logger.error("新增用户异常");
+        }
+        if (result == 1) {
+            map.put("msg", "注册成功");
+        } else {
+            map.put("msg", "注册失败");
+        }
+
+        return map;
+
+    }
 }

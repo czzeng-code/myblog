@@ -1,5 +1,6 @@
 package com.zeng.web.blog.dao;
 
+import com.zeng.web.blog.domain.UserDto;
 import com.zeng.web.blog.entity.User;
 
 import java.sql.SQLException;
@@ -15,11 +16,11 @@ import java.util.List;
 public interface UserDao {
     /**
      * 新增用户
-     * @param user
+     * @param userDto
      * @return
      * @throws SQLException
      */
-    int insert(User user) throws SQLException;
+    int insert(UserDto userDto) throws SQLException;
     /**
      * 批量新增用户
      * @param userList
