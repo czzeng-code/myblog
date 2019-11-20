@@ -64,6 +64,7 @@ public class ArticleDaoImpl implements ArticleDao {
                 Article article = new Article();
                 article.setId(rs.getLong("id"));
                 article.setTitle(rs.getString("title"));
+                article.setContent(rs.getString("content"));
                 article.setCover(rs.getString("cover"));
                 article.setNickname(rs.getString("nickname"));
                 article.setComments(rs.getLong("comments"));
