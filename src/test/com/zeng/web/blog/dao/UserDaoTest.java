@@ -1,6 +1,6 @@
 package com.zeng.web.blog.dao;
 
-import com.zeng.web.blog.domain.UserDto;
+import com.zeng.web.blog.domain.dto.UserDto;
 import com.zeng.web.blog.entity.User;
 import com.zeng.web.blog.factory.DaoFactory;
 import com.zeng.web.blog.util.JSoupSpider;

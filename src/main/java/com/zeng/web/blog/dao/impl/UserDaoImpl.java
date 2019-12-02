@@ -1,8 +1,10 @@
 package com.zeng.web.blog.dao.impl;
 
 import com.zeng.web.blog.dao.UserDao;
-import com.zeng.web.blog.domain.UserDto;
+import com.zeng.web.blog.domain.dto.UserDto;
+import com.zeng.web.blog.domain.vo.UserVo;
 import com.zeng.web.blog.entity.User;
+import com.zeng.web.blog.util.BeanHandler;
 import com.zeng.web.blog.util.DataUtil;
 import com.zeng.web.blog.util.DbUtil;
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +35,7 @@ public class UserDaoImpl implements UserDao {
         pstmt.setObject(3, Timestamp.valueOf(LocalDateTime.now()));
         pstmt.setObject(4, DataUtil.getBirthday());
         int n = pstmt.executeUpdate();
-//        DbUtil.close(null, pstmt, connection);
+        DbUtil.close(connection, pstmt);
         return n;
     }
 
@@ -60,7 +63,7 @@ public class UserDaoImpl implements UserDao {
         });
         int[] result = pstmt.executeBatch();
         connection.commit();
-//        DbUtil.close(null,pstmt,connection);
+        DbUtil.close(connection,pstmt);
         return result;
     }
 
@@ -72,7 +75,7 @@ public class UserDaoImpl implements UserDao {
         pstmt.setString(1, mobile);
         ResultSet rs = pstmt.executeQuery();
         User user = null;
-        if (rs.next()) {
+        while (rs.next()) {
             user = new User();
             user.setId(rs.getLong("id"));
             user.setMobile(rs.getString("mobile"));
@@ -89,6 +92,60 @@ public class UserDaoImpl implements UserDao {
             user.setCreateTime(rs.getTimestamp("create_time").toLocalDateTime());
             user.setStatus(rs.getShort("status"));
         }
+        DbUtil.close(connection, pstmt, rs);
         return user;
     }
+
+    @Override
+    public List<User> selectHotUsers() throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "SELECT * FROM t_user ORDER BY fans DESC LIMIT 10 ";
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        ResultSet rs = pstmt.executeQuery();
+        List<User> userList = BeanHandler.convertUser(rs);
+        DbUtil.close(connection, pstmt, rs);
+        return userList;
+    }
+
+    @Override
+    public List<User> selectByPage(int currentPage, int count) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "SELECT * FROM t_user LIMIT ?,? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setInt(1, (currentPage - 1) * count);
+        pst.setInt(2, count);
+        ResultSet rs = pst.executeQuery();
+        List<User> userList = BeanHandler.convertUser(rs);
+        DbUtil.close(connection, pst, rs);
+        return userList;
+    }
+
+    @Override
+    public UserVo getUser(long id) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "SELECT * FROM t_user WHERE id = ? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setLong(1, id);
+        ResultSet rs = pst.executeQuery();
+        UserVo userVo = new UserVo();
+        User user = BeanHandler.convertUser(rs).get(0);
+        userVo.setUser(user);
+        DbUtil.close(connection, pst, rs);
+        return userVo;
+    }
+
+    @Override
+    public List<User> selectByKeywords(String keywords) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "SELECT * FROM t_user " +
+                "WHERE nickname LIKE ?  OR introduction LIKE ? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, "%" + keywords + "%");
+        pst.setString(2, "%" + keywords + "%");
+        ResultSet rs = pst.executeQuery();
+        List<User> userList = BeanHandler.convertUser(rs);
+        DbUtil.close(connection, pst, rs);
+        return userList;
+    }
+
 }

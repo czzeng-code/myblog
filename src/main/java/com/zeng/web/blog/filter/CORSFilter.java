@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * @author
  * @ClassName CORSFilter
- * @Description 字符集过滤器,过滤请求和响应字符集，统一响应类型
+ * @Description 跨域过滤器
  * @Date 2019/10/3
  * @Version 1.0
  **/
@@ -25,7 +25,10 @@ public class CORSFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with, Content-Type");
+        //允许客户端请求头携带
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with, Content-Type,Access-Token,UId");
+        //允许给客户端响应头携带
+        response.setHeader("Access-Control-Expose-Headers", "Access-Token");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         chain.doFilter(req, res);
     }

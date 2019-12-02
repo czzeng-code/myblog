@@ -3,7 +3,7 @@ package com.zeng.web.blog.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zeng.web.blog.factory.ServiceFactory;
-import com.zeng.web.blog.service.ArticleService;
+import com.zeng.web.blog.service.TopicService;
 import com.zeng.web.blog.util.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,67 +18,64 @@ import java.io.PrintWriter;
 
 /**
  * @author Zeng
- * @ClassName ArticleController
- * @Description 文章控制器
- * @Date 2019/11/18
+ * @ClassName TopicController
+ * @Description 专题控制器
+ * @Date 2019/12/1
  * @Version 1.0
  **/
-@WebServlet(urlPatterns = {"/api/article", "/api/article/*"})
-public class ArticleController extends HttpServlet {
-
-    private ArticleService articleService = ServiceFactory.getArticleServiceInstance();
-    private static Logger logger = LoggerFactory.getLogger(ArticleController.class);
+@WebServlet(urlPatterns = {"/api/topic", "/api/topic/*"})
+public class TopicController extends HttpServlet {
+    private TopicService topicService = ServiceFactory.getTopicServiceInstance();
+    private static Logger logger = LoggerFactory.getLogger(TopicController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //取得请求地址
         String uri = req.getRequestURI().trim();
-        if ("/api/article".equals(uri)) {
+        if ("/api/topic".equals(uri)) {
             String page = req.getParameter("page");
             String keywords = req.getParameter("keywords");
             String count = req.getParameter("count");
             if (page != null) {
-                getArticlesByPage(resp, Integer.parseInt(page), Integer.parseInt(count));
+                getTopicsByPage(resp, Integer.parseInt(page), Integer.parseInt(count));
             } else if (keywords != null) {
-                getArticlesByKeywords(resp, keywords);
+                getTopicsByKeywords(resp, keywords);
             } else {
-                getHotArticles(req, resp);
+                getHotTopics(req, resp);
             }
         } else {
-            getArticle(req, resp);
+            getTopic(req, resp);
         }
     }
 
-    private void getHotArticles(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void getHotTopics(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Gson gson = new GsonBuilder().create();
-        Result result = articleService.getHotArticles();
+        Result result = topicService.getHotTopics();
         PrintWriter out = resp.getWriter();
         out.print(gson.toJson(result));
         out.close();
     }
 
-    private void getArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void getTopicsByPage(HttpServletResponse resp, int page, int count) throws ServletException, IOException {
+        Gson gson = new GsonBuilder().create();
+        Result result = topicService.selectByPage(page, count);
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
+
+    private void getTopicsByKeywords(HttpServletResponse resp, String keywords) throws ServletException, IOException {
+        Gson gson = new GsonBuilder().create();
+        Result result = topicService.selectByKeywords(keywords);
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
+
+    private void getTopic(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String info = req.getPathInfo().trim();
-        //取得路径参数
         String id = info.substring(info.indexOf("/") + 1);
-        Result result = articleService.getArticle(Long.parseLong(id));
         Gson gson = new GsonBuilder().create();
-        PrintWriter out = resp.getWriter();
-        out.print(gson.toJson(result));
-        out.close();
-    }
-
-    private void getArticlesByPage(HttpServletResponse resp, int page, int count) throws ServletException, IOException {
-        Gson gson = new GsonBuilder().create();
-        Result result = articleService.getArticlesByPage(page, count);
-        PrintWriter out = resp.getWriter();
-        out.print(gson.toJson(result));
-        out.close();
-    }
-
-    private void getArticlesByKeywords(HttpServletResponse resp, String keywords) throws ServletException, IOException {
-        Gson gson = new GsonBuilder().create();
-        Result result = articleService.selectByKeywords(keywords);
+        Result result = topicService.getTopic(Long.parseLong(id));
         PrintWriter out = resp.getWriter();
         out.print(gson.toJson(result));
         out.close();

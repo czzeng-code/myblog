@@ -1,6 +1,7 @@
 package com.zeng.web.blog.dao;
 
-import com.zeng.web.blog.domain.UserDto;
+import com.zeng.web.blog.domain.dto.UserDto;
+import com.zeng.web.blog.domain.vo.UserVo;
 import com.zeng.web.blog.entity.User;
 
 import java.sql.SQLException;
@@ -35,4 +36,38 @@ public interface UserDao {
      * @return
      */
     User findUserByMobile(String mobile) throws SQLException;
+
+    /**
+     * 查询热门用户
+     * @return
+     * @throws SQLException
+     */
+    List<User> selectHotUsers() throws  SQLException;
+
+    /**
+     * 查询分页用户
+     * @param
+     * @return
+     * @throws SQLException
+     */
+    List<User> selectByPage(int currentPage, int count) throws SQLException;
+
+    /**
+     * 根据id查询用户
+     * @param  id
+     * @return
+     * @throws SQLException
+     */
+    UserVo getUser(long id) throws SQLException;
+
+
+    /**
+     * 模糊搜索用户
+     * @param keywords
+     * @return
+     * @throws SQLException
+     */
+    List<User> selectByKeywords(String keywords) throws SQLException;
+
+
 }

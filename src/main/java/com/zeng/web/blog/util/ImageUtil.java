@@ -22,23 +22,17 @@ public class ImageUtil {
      * @param height
      * @return
      */
-    public static BufferedImage getImage(String content, int width, int height) {
-        BufferedImage image = new BufferedImage(width,height,1);
+    public static BufferedImage getImage(int width, int height, String content) {
+        BufferedImage image = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) image.getGraphics();
         //底色
         g.setColor(new Color(255, 255, 255));
         g.fillRect(0, 0, 200, 100);
-        g.setPaint(new Color(62, 63,65));
-        Font font = new Font("微软雅黑", Font.BOLD, 35);
+        g.setPaint(new Color(44, 245, 90));
+        Font font = new Font("微软雅黑", Font.BOLD, 45);
         g.setFont(font);
-        g.drawString(content,60, 60);
+        g.drawString(content, width / 4, height/2 );
+        g.rotate(1.5);
         return image;
-    }
-
-    public static void main(String[] args) throws IOException {
-        String code = StringUtil.getCode();
-        BufferedImage image = ImageUtil.getImage(code, 200, 100);
-        File file = new File("D:/code.jpg");
-        ImageIO.write(image,"jpg", file);
     }
 }

@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,8 +25,13 @@ import java.io.OutputStream;
 public class CodeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //获取随机验证码
         String code = StringUtil.getCode();
-        BufferedImage image = ImageUtil.getImage(code, 200, 100);
+        //存入session
+        HttpSession session = req.getSession();
+        session.setAttribute("code", code);
+        resp.setHeader("Access-Token",session.getId());
+        BufferedImage image = ImageUtil.getImage(200, 100, code);
         //设置响应内容类型
         resp.setContentType("image/jpg");
         OutputStream out = resp.getOutputStream();
