@@ -148,4 +148,15 @@ public class UserDaoImpl implements UserDao {
         return userList;
     }
 
+    @Override
+    public boolean alterUser(User user) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "UPDATE t_user SET nickname=?, gender=?, birthday=?, address=?, introduction=?, email=? WHERE id=?";
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        pstmt.setString(1, user.getNickname());
+        pstmt.setString(2, user.getGender());
+//        pstmt.set
+        return false;
+    }
+
 }

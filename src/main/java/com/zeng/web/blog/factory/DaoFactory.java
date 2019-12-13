@@ -1,13 +1,7 @@
 package com.zeng.web.blog.factory;
 
-import com.zeng.web.blog.dao.ArticleDao;
-import com.zeng.web.blog.dao.CommentDao;
-import com.zeng.web.blog.dao.TopicDao;
-import com.zeng.web.blog.dao.UserDao;
-import com.zeng.web.blog.dao.impl.ArticleDaoImpl;
-import com.zeng.web.blog.dao.impl.CommentDaoImpl;
-import com.zeng.web.blog.dao.impl.TopicDaoImpl;
-import com.zeng.web.blog.dao.impl.UserDaoImpl;
+import com.zeng.web.blog.dao.*;
+import com.zeng.web.blog.dao.impl.*;
 
 /**
  * @author Zeng
@@ -33,5 +27,9 @@ public class DaoFactory {
 
     public  static CommentDao getCommentDaoInstance() {
         return new CommentDaoImpl();
+    }
+
+    public static LikeDao getLikeDaoInstance() {
+        return new LikeDaoImpl();
     }
 }
