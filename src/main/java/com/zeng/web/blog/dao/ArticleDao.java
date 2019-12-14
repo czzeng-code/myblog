@@ -72,4 +72,12 @@ public interface ArticleDao {
      * @throws SQLException
      */
     ArticleVo getArticle(long id) throws SQLException;
+
+    /**
+     * 插入一条文章
+     * @param article
+     * @return
+     * @throws SQLException
+     */
+    boolean insert(Article article) throws SQLException;
 }

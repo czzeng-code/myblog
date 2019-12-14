@@ -1,6 +1,7 @@
 package com.zeng.web.blog.service;
 
 import com.zeng.web.blog.domain.dto.UserDto;
+import com.zeng.web.blog.entity.User;
 import com.zeng.web.blog.util.Result;
 
 import java.util.Map;
@@ -51,4 +52,11 @@ public interface UserService {
      * @return
      */
     Result selectByKeywords(String keywords);
+
+    /**
+     * 修改个人信息
+     * @param user
+     * @return
+     */
+    Result alterUser(User user);
 }

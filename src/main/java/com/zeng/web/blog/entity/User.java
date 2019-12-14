@@ -23,6 +23,8 @@ public class User {
     private LocalDate birthday;
     private String address;
     private String introduction;
+
+    private String email;
     private String homepage;
     private Short follows;
     private Short fans;

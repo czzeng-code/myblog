@@ -1,5 +1,6 @@
 package com.zeng.web.blog.service;
 
+import com.zeng.web.blog.entity.Article;
 import com.zeng.web.blog.util.Result;
 
 /**
@@ -41,4 +42,11 @@ public interface ArticleService {
      * @return
      */
     Result selectByKeywords(String keywords);
+
+    /**
+     * 写文章
+     * @param article
+     * @return
+     */
+    Result writeArticle(Article article);
 }

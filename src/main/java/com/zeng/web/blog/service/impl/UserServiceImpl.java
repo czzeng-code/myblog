@@ -142,4 +142,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public Result alterUser(User user) {
+        boolean b = false;
+        try {
+            b = userDao.alterUser(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (b) {
+            return Result.success();
+        }
+        return Result.failure(ResultCode.DATA_IS_WRONG);
+    }
+
 }

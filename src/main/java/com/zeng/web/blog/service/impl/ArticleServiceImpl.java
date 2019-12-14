@@ -84,4 +84,19 @@ public class ArticleServiceImpl implements ArticleService {
             return Result.failure(ResultCode.RESULT_CODE_DATA_NONE);
         }
     }
+
+    @Override
+    public Result writeArticle(Article article) {
+        boolean b = false;
+        try {
+            b = articleDao.insert(article);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (b) {
+            return Result.success();
+        }
+        return Result.failure(ResultCode.DATA_IS_WRONG);
+
+    }
 }

@@ -5,6 +5,7 @@ import cn.hutool.db.Entity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zeng.web.blog.domain.dto.UserDto;
+import com.zeng.web.blog.entity.User;
 import com.zeng.web.blog.factory.ServiceFactory;
 import com.zeng.web.blog.listener.MySessionContext;
 import com.zeng.web.blog.service.UserService;
@@ -47,6 +48,8 @@ public class UserController extends HttpServlet {
             signIn(req, resp);
         } else if ("/api/user/sign-up".equals(uri)) {
             signUp(req, resp);
+        } else if ("/api/user/alter".equals(uri)) {
+            alterUser(req, resp);
         }
 
     }
@@ -163,7 +166,20 @@ public class UserController extends HttpServlet {
         out.close();
     }
 
-
+    private void alterUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        BufferedReader reader = req.getReader();
+        StringBuilder stringBuilder = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            stringBuilder.append(line);
+        }
+        Gson gson = new GsonBuilder().create();
+        User user = gson.fromJson(stringBuilder.toString(), User.class);
+        Result result = userService.alterUser(user);
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
     @Override
     public void init() throws ServletException {
         logger.info("UserController初始化");

@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -178,5 +179,24 @@ public class ArticleDaoImpl implements ArticleDao {
         articleVo.getArticle().setContent(rs.getString("content"));
         DbUtil.close(connection, pst, rs);
         return articleVo;
+    }
+
+    @Override
+    public boolean insert(Article article) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "INSERT INTO t_article (user_id, title, summary, cover, create_time, topic_id, content) VALUES (?,?,?,?,?,?,?) ";
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        pstmt.setLong(1, article.getUserId());
+        pstmt.setString(2, article.getTitle());
+        pstmt.setString(3, article.getSummary());
+        pstmt.setString(4, article.getCover());
+        pstmt.setObject(5, LocalDateTime.now());
+        pstmt.setLong(6, article.getTopicId());
+        pstmt.setString(7, article.getContent());
+        int i = pstmt.executeUpdate();
+        if (i ==1) {
+            return true;
+        }
+        return false;
     }
 }
