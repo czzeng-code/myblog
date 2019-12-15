@@ -64,4 +64,18 @@ public class CommentDaoImpl implements CommentDao {
         DbUtil.close(connection, preparedStatement, resultSet);
         return commentVoList;
     }
+
+    @Override
+    public boolean deleteComment(long id) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "DELETE FROM t_comment WHERE id=?";
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        pstmt.setLong(1, id);
+        int result = pstmt.executeUpdate();
+        if (result == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

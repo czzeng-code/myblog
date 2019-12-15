@@ -57,5 +57,13 @@ public class CommentController extends HttpServlet {
         out.close();
     }
 
-
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Gson gson = new GsonBuilder().create();
+        String id = req.getParameter("id");
+        Result result =commentService.deleteComment(Long.valueOf(id));
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
 }

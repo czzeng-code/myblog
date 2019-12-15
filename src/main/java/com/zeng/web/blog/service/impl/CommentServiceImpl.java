@@ -50,4 +50,19 @@ public class CommentServiceImpl implements CommentService {
             return Result.failure(ResultCode.RESULT_CODE_DATA_NONE);
         }
     }
+
+    @Override
+    public Result deleteComment(long id) {
+        boolean b = false;
+        try {
+            b = commentDao.deleteComment(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (b) {
+            return Result.success();
+        }
+        return Result.failure(ResultCode.DATA_IS_WRONG);
+    }
+
 }
