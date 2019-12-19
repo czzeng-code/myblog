@@ -2,6 +2,7 @@ package com.zeng.web.blog.factory;
 
 import com.zeng.web.blog.dao.*;
 import com.zeng.web.blog.dao.impl.*;
+import com.zeng.web.blog.entity.UserFollow;
 
 /**
  * @author Zeng
@@ -32,4 +33,9 @@ public class DaoFactory {
     public static LikeDao getLikeDaoInstance() {
         return new LikeDaoImpl();
     }
+
+    public static UserFollowDao getUserFollowDaoInstance() {
+        return new UserFollowDaoImpl();
+    }
+
 }

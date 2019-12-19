@@ -23,8 +23,7 @@ public interface CommentService {
 
     /**
      * 删除评论
-     * @param userId
-     * @param articleId
+     * @param id
      * @return
      */
     Result deleteComment(long id);

@@ -1,7 +1,7 @@
 package com.zeng.web.blog.controller;
 
-import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
-import cn.hutool.db.Entity;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zeng.web.blog.domain.dto.UserDto;
@@ -9,7 +9,6 @@ import com.zeng.web.blog.entity.User;
 import com.zeng.web.blog.factory.ServiceFactory;
 import com.zeng.web.blog.listener.MySessionContext;
 import com.zeng.web.blog.service.UserService;
-import com.zeng.web.blog.util.Message;
 import com.zeng.web.blog.util.ResponseObject;
 import com.zeng.web.blog.util.Result;
 import com.zeng.web.blog.util.ResultCode;
@@ -25,7 +24,8 @@ import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
@@ -173,11 +173,18 @@ public class UserController extends HttpServlet {
         while ((line = reader.readLine()) != null) {
             stringBuilder.append(line);
         }
-        Gson gson = new GsonBuilder().create();
-        User user = gson.fromJson(stringBuilder.toString(), User.class);
+        System.out.println(stringBuilder.toString());
+        //处理（生日）时间格式转换问题·
+        var jsonStr = stringBuilder.toString();
+        JSONObject jsonObject = JSONObject.parseObject(jsonStr);
+        User user = JSONObject.parseObject(jsonStr, User.class);
+        String dateString = jsonObject.get("birthday").toString();
+        LocalDate localDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        user.setBirthday(localDate);
         Result result = userService.alterUser(user);
+        System.out.println(result);
         PrintWriter out = resp.getWriter();
-        out.print(gson.toJson(result));
+        out.print(JSONObject.parseObject(JSON.toJSONString(result)));
         out.close();
     }
     @Override

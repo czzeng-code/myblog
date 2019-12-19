@@ -7,6 +7,7 @@ import com.zeng.web.blog.entity.User;
 import com.zeng.web.blog.util.BeanHandler;
 import com.zeng.web.blog.util.DataUtil;
 import com.zeng.web.blog.util.DbUtil;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,7 @@ public class UserDaoImpl implements UserDao {
         String sql = "INSERT INTO t_user (mobile,password,create_time,birthday) VALUES (?,?,?,?) ";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setString(1, userDto.getMobile());
-        pstmt.setString(2, userDto.getPassword());
+        pstmt.setString(2, DigestUtils.md5Hex(userDto.getPassword()));
         pstmt.setObject(3, Timestamp.valueOf(LocalDateTime.now()));
         pstmt.setObject(4, DataUtil.getBirthday());
         int n = pstmt.executeUpdate();

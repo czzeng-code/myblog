@@ -35,6 +35,7 @@ public class BeanHandler {
                 user.setGender(rs.getString("gender"));
                 user.setBirthday(rs.getDate("birthday").toLocalDate());
                 user.setIntroduction(rs.getString("introduction"));
+                user.setEmail(rs.getString("email"));
                 user.setHomepage(rs.getString("homepage"));
                 user.setAddress(rs.getString("address"));
                 user.setFollows(rs.getShort("follows"));

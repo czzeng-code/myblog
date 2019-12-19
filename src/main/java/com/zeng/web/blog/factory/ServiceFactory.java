@@ -32,4 +32,7 @@ public class ServiceFactory {
         return new LikeServiceImpl();
     }
 
+    public static UserFollowService getUserFollowServiceInstance() {
+        return new UserFollowServiceImpl();
+    }
 }
